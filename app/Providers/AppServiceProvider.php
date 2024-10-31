@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\NewsApi\NewsApiService;
+use App\Services\NewsApi\NewsRepository\NewsApiRepository;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,7 +13,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // news Api
+        $this->app->singleton(
+            abstract: NewsApiService::class,
+            concrete: fn (): NewsApiRepository => new NewsApiRepository(),
+        );
     }
 
     /**
