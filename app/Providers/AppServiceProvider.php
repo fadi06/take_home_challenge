@@ -2,28 +2,30 @@
 
 namespace App\Providers;
 
-use App\Services\NewsApi\NewsApiService;
-use App\Services\NewsApi\NewsRepository\NewsApiRepository;
 use Illuminate\Support\ServiceProvider;
+use App\Services\NewsApi\NewsApiService;
+use App\Services\GuardiansApi\GuardiansApiService;
+use App\Services\NewsApi\NewsRepository\NewsApiRepository;
+use App\Services\GuardianApi\GuardianRepository\GuardianRepository; // Update this line
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
-    public function register(): void
+    public function register()
     {
-        // news Api
+        // Register NewsApiService
         $this->app->singleton(
-            abstract: NewsApiService::class,
-            concrete: fn (): NewsApiRepository => new NewsApiRepository(),
+            NewsApiService::class,
+            fn (): NewsApiRepository => new NewsApiRepository(),
+        );
+
+        // Register GuardiansApiService
+        $this->app->singleton(
+            GuardiansApiService::class,
+            fn (): GuardiansApiService => new GuardiansApiService(new GuardianRepository()),
         );
     }
 
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void
+    public function boot()
     {
         //
     }

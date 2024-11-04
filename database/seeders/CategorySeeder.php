@@ -21,6 +21,8 @@ class CategorySeeder extends Seeder
             'entertainment',
             'health',
             'science',
+            'guardian News',
+            'NewYork times',
         ];
 
         foreach ($categories as $key => $categoy) {
