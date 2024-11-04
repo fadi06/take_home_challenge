@@ -3,7 +3,7 @@
 namespace App\Services\GuardiansApi;
 
 use App\Services\NewsApi\NewsApiService;
-use App\Services\GuardianApi\GuardianRepository\GuardianRepository;
+use App\Services\GuardiansApi\GuardianRepository\GuardianRepository;
 
 class GuardiansApiService implements NewsApiService
 {

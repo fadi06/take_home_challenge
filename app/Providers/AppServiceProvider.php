@@ -6,7 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use App\Services\NewsApi\NewsApiService;
 use App\Services\GuardiansApi\GuardiansApiService;
 use App\Services\NewsApi\NewsRepository\NewsApiRepository;
-use App\Services\GuardianApi\GuardianRepository\GuardianRepository; // Update this line
+use App\Services\GuardiansApi\GuardianRepository\GuardianRepository; // Update this line
 
 class AppServiceProvider extends ServiceProvider
 {

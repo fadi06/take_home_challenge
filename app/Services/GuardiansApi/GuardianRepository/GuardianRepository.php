@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\GuardianApi\GuardianRepository;
+namespace App\Services\GuardiansApi\GuardianRepository;
 
 use Carbon\Carbon;
 use App\Models\Article;
@@ -20,16 +20,13 @@ class GuardianRepository
 
     public function fetchAndSave()
     {
-        info('here');
-        dd('i');
         foreach ($this->fetchGuardiansApiCategories() as $pageNumber) {
-            info("Page ". $pageNumber. " is started");
             $response = $this->getResponse($pageNumber);
 
             if ($response->getStatusCode() === 200) {
                 $responseData = json_decode($response->getBody());
 
-                $this->setAndSaveData($responseData->articles, $pageNumber);
+                $this->setAndSaveData($responseData->response->results, $pageNumber);
 
             } else {
                 $response_body = json_decode($response->getBody());
@@ -50,7 +47,7 @@ class GuardianRepository
         }
 
         $params = [
-            'apiKey' => $apiKey,
+            'api-key' => $apiKey,
             'page' => $pageNumber,
             'show-fields' => 'all'
         ];
