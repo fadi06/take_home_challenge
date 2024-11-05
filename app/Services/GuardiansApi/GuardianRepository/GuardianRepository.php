@@ -4,6 +4,7 @@ namespace App\Services\GuardiansApi\GuardianRepository;
 
 use Carbon\Carbon;
 use App\Models\Article;
+use App\Models\Author;
 use App\Traits\BuildClient;
 use Illuminate\Support\Facades\Log;
 
@@ -66,7 +67,15 @@ class GuardianRepository
         $categoryId = 7;
 
         foreach ($articles as $article) {
-            if(empty($article->fields->body) ||Article::where('url', $article->webUrl)->exists()) {
+            $author = Author::firstOrCreate(
+                ['name' => $article->fields->byline ?? 'un-known'],
+                ['name' => $article->fields->byline ?? 'un-known', 'bio' => '']
+            );
+            if(
+                empty($authorId) ||
+                empty($article->fields->body) ||
+                Article::whereUrl($article->webUrl)->exists()
+            ) {
                 continue;
             }
 
@@ -76,9 +85,9 @@ class GuardianRepository
                 'content' => $article->fields->body ?? null,
                 'url' => $article->webUrl ?? null,
                 'image' => $article->fields->thumbnail ?? null,
-                'source' => 'The Guardian',
+                'source_id' => 1,
                 'category_id' => $categoryId,
-                'author' => $article->fields->byline ?? null,
+                'author_id' => $author->id,
                 'feed' => 'guardian',
                 'published_at' => Carbon::createFromFormat('Y-m-d\TH:i:sP', $article->webPublicationDate) ?? null,
                 'created_at' => now(),

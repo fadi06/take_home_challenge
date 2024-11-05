@@ -4,6 +4,7 @@ namespace App\Services\NewyorkTimes\NewyorkTimesRepository;
 
 use Carbon\Carbon;
 use App\Models\Article;
+use App\Models\Author;
 use App\Models\Category;
 use App\Traits\BuildClient;
 use Illuminate\Support\Facades\Log;
@@ -68,7 +69,15 @@ class NewyorkTimesRepository
 
         foreach ($articles as $article) {
             $image = isset($article->multimedia[0]) ? $article->multimedia[0]->url : null;
-            if(!is_null($image) && Article::where('url', $article->url)->exists()) {
+            $authorName = str_replace('By ', '', ($article->byline ?? 'un-known'));
+
+            $author = Author::firstOrCreate(
+                ['name' => $authorName],
+                ['name' => $authorName, 'bio' => '']
+            );
+            if(
+                !is_null($image) || Article::where('url', $article->url)->exists()
+            ) {
                 continue;
             }
 
@@ -78,10 +87,9 @@ class NewyorkTimesRepository
                 'content' => $article->abstract ?? null,
                 'url' => $article->url ?? null,
                 'image' => $image,
-                'source' => 'The Newyork Times',
+                'source_id' => 2,
                 'category_id' => $categoryId,
-                'author' => str_replace('By ', '', $article->byline) ?? null,
-                'feed' => 'newyork times',
+                'author_id' => $author->id,
                 'published_at' => Carbon::createFromFormat('Y-m-d\TH:i:sP', $article->published_date) ?? null,
                 'created_at' => now(),
                 'updated_at' => now(),

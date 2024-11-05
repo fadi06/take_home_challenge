@@ -3,6 +3,7 @@
 namespace App\Services\NewsApi\NewsRepository;
 
 use App\Models\Article;
+use App\Models\Author;
 use App\Models\Category;
 use App\Services\NewsApi\NewsApiService;
 use App\Traits\BuildClient;
@@ -71,7 +72,15 @@ class NewsApiRepository implements NewsApiService
         $categoryId = Category::where('name', $category)->pluck('id')->first();
 
         foreach ($articles as $article) {
-            if($article->title === "[Removed]" || Article::where('url', $article->url)->exists()) {
+            $authorName = $article->author ?? 'un-known';
+            $author = Author::firstOrCreate(
+                ['name' => $authorName],
+                ['name' => $authorName, 'bio' => '']
+            );
+            if(
+                $article->title === "[Removed]" ||
+                Article::where('url', $article->url)->exists()
+            ) {
                 continue;
             }
 
@@ -81,10 +90,9 @@ class NewsApiRepository implements NewsApiService
                 'content' => $article->content,
                 'url' => $article->url,
                 'image' => $article->urlToImage,
-                'source' => $article->source->name,
+                'source_id' => 3,
                 'category_id' => $categoryId,
-                'author' => $article->author,
-                'feed' => 'newsapi',
+                'author_id' => $author->id,
                 'published_at' => Carbon::createFromFormat('Y-m-d\TH:i:sP', $article->publishedAt) ?? null,
                 'created_at' => now(),
                 'updated_at' => now(),

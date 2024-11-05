@@ -38,8 +38,8 @@ class FetchNewsArticles extends Command
      */
     public function handle()
     {
-        // $this->newsApiService->fetchAndSave();
-        // $this->guardianService->fetchAndSave();
+        $this->newsApiService->fetchAndSave();
+        $this->guardianService->fetchAndSave();
         $this->newyorkTimesApiService->fetchAndSave();
     }
 

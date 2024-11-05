@@ -11,16 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('articles', function (Blueprint $table) {
+        Schema::create('user_preferences', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->longText('description')->nullable();
-            $table->longText('content')->nullable();
-            $table->string('country')->nullable()->default('us');
-            $table->string('language')->default('en');
-            $table->text('image')->nullable();
-            $table->mediumText('url')->nullable();
-            $table->timestamp('published_at')->nullable();
+            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('category_id')->nullable();
             $table->unsignedBigInteger('author_id')->nullable();
             $table->unsignedBigInteger('source_id')->nullable();
@@ -33,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('articles');
+        Schema::dropIfExists('user_preferences');
     }
 };

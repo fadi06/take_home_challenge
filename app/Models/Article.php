@@ -37,20 +37,31 @@ class Article extends Model
     /**
      * Scope to filter by category ID.
      */
-    public function scopeFilterByCategory($query, $categoryId)
+    public function scopeFilterByCategory($query, $categoryIds)
     {
-        return $query->when($categoryId, function ($q) use ($categoryId) {
-            $q->where('category_id', $categoryId);
+        dd($categoryIds);
+        return $query->when($categoryIds, function ($q) use ($categoryIds) {
+            $q->whereIn('category_id', $categoryIds);
         });
     }
 
     /**
      * Scope to filter by source.
      */
-    public function scopeFilterBySource($query, $source)
+    public function scopeFilterBySource($query, $ids)
     {
-        return $query->when($source, function ($q) use ($source) {
-            $q->where('source', 'LIKE', '%' . $source . '%');
+        return $query->when($ids, function ($q) use ($ids) {
+            $q->whereIn('source_id', $ids);
+        });
+    }
+
+    /**
+     * Scope to filter by author.
+     */
+    public function scopeFilterByAuthor($query, $ids)
+    {
+        return $query->when($ids, function ($q) use ($ids) {
+            $q->whereIn('author_id', $ids);
         });
     }
 }
