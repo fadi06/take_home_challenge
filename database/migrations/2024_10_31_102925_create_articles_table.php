@@ -14,15 +14,15 @@ return new class extends Migration
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->foreignId('category_id')->constrained('categories')->default('1');
+            $table->unsignedBigInteger('category_id')->nullable();
             $table->longText('description')->nullable();
             $table->longText('content')->nullable();
             $table->string('country')->nullable()->default('us');
             $table->string('language')->default('en');
             $table->string('author')->nullable();
             $table->text('image')->nullable();
-            $table->string('source')->nullable;
-            $table->string('url')->nullable();
+            $table->string('source')->nullable();
+            $table->mediumText('url')->nullable();
             $table->string('feed')->default('newsapi');
             $table->timestamp('published_at')->nullable();
             $table->timestamps();

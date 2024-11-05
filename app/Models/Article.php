@@ -30,7 +30,7 @@ class Article extends Model
     public function scopeFilterByDate($query, $date)
     {
         return $query->when($date, function ($q) use ($date) {
-            $q->whereDate('created_at', $date);
+            $q->whereDate('published_at', $date);
         });
     }
 
@@ -50,7 +50,7 @@ class Article extends Model
     public function scopeFilterBySource($query, $source)
     {
         return $query->when($source, function ($q) use ($source) {
-            $q->where('source', $source);
+            $q->where('source', 'LIKE', '%' . $source . '%');
         });
     }
 }

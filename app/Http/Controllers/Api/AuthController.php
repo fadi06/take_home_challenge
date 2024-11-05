@@ -19,7 +19,7 @@ class AuthController extends Controller
     {
         $user = User::create($request->validated());
 
-        $user->toekn = $user->createToken('api-token')->plainTextToken;
+        $user->token = $user->createToken('api-token')->plainTextToken;
 
         return $this->sendSuccessResponse(message: __('global.user_register_successfully'), result: $user);
     }
@@ -33,7 +33,7 @@ class AuthController extends Controller
             return $this->sendErrorResponse(message: __('global.invalid_credentials'), code: 401);
         }
 
-        $user->toekn = $user->createToken('api-token')->plainTextToken;
+        $user->token = $user->createToken('api-token')->plainTextToken;
 
         return $this->sendSuccessResponse(message: __('global.user_logged_in_successfully'), result: $user);
 

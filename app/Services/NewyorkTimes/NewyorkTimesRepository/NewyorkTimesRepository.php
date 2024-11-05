@@ -38,7 +38,7 @@ class NewyorkTimesRepository
             }
 
             info($category. " is completed");
-            sleep(30);
+            sleep(10);
         }
     }
 
@@ -67,17 +67,16 @@ class NewyorkTimesRepository
         $categoryId = Category::where('name', $category)->pluck('id')->first();;
 
         foreach ($articles as $article) {
-            info(json_encode($article));
             $image = isset($article->multimedia[0]) ? $article->multimedia[0]->url : null;
             if(!is_null($image) && Article::where('url', $article->url)->exists()) {
                 continue;
             }
 
             $finalData[] = [
-                'title' => $article->title,
+                'title' => $article->title ?? null,
                 'description' => $article->abstract ?? null,
-                'content' => $article->abstract,
-                'url' => $article->url,
+                'content' => $article->abstract ?? null,
+                'url' => $article->url ?? null,
                 'image' => $image,
                 'source' => 'The Newyork Times',
                 'category_id' => $categoryId,
