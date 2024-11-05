@@ -57,30 +57,30 @@ class GuardianRepository
 
     private function fetchGuardiansApiCategories(): array
     {
-        return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
     }
 
     private function setAndSaveData($articles, $category): void {
         $finalData = [];
 
         $categoryId = 7;
-dd($articles);
+
         foreach ($articles as $article) {
-            if($article->title === "[Removed]" || Article::where('url', $article->url)->exists()) {
+            if(empty($article->fields->body) ||Article::where('url', $article->webUrl)->exists()) {
                 continue;
             }
 
             $finalData[] = [
-                'title' => $article->title,
-                'description' => $article->description,
-                'content' => $article->content,
-                'url' => $article->url,
-                'image' => $article->urlToImage,
-                'source' => $article->source->name,
+                'title' => $article->webTitle,
+                'description' => $article->fields->standfirst ?? null,
+                'content' => $article->fields->body,
+                'url' => $article->webUrl,
+                'image' => $article->fields->thumbnail ?? null,
+                'source' => 'The Guardian',
                 'category_id' => $categoryId,
-                'author' => $article->author,
-                'feed' => 'newsapi',
-                'published_at' => Carbon::createFromFormat('Y-m-d\TH:i:sP', $article->publishedAt) ?? null,
+                'author' => $article->fields->byline,
+                'feed' => 'guardian',
+                'published_at' => Carbon::createFromFormat('Y-m-d\TH:i:sP', $article->webPublicationDate) ?? null,
                 'created_at' => now(),
                 'updated_at' => now(),
             ];

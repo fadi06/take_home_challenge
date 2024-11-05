@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->foreignId('category_id')->constrained('categories')->default('1');
-            $table->text('description')->nullable();
-            $table->text('content')->nullable();
+            $table->longText('description')->nullable();
+            $table->longText('content')->nullable();
             $table->string('country')->nullable()->default('us');
             $table->string('language')->default('en');
             $table->string('author')->nullable();

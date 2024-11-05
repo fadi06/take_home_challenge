@@ -7,6 +7,8 @@ use App\Services\NewsApi\NewsApiService;
 use App\Services\GuardiansApi\GuardiansApiService;
 use App\Services\NewsApi\NewsRepository\NewsApiRepository;
 use App\Services\GuardiansApi\GuardianRepository\GuardianRepository; // Update this line
+use App\Services\NewyorkTimes\NewyorkTimesApiService;
+use App\Services\NewyorkTimes\NewyorkTimesRepository\NewyorkTimesRepository;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,6 +24,12 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             GuardiansApiService::class,
             fn (): GuardiansApiService => new GuardiansApiService(new GuardianRepository()),
+        );
+
+        // Register NewYork Times
+        $this->app->singleton(
+            NewyorkTimesApiService::class,
+            fn (): NewyorkTimesApiService => new NewyorkTimesApiService(new NewyorkTimesRepository()),
         );
     }
 
