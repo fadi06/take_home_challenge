@@ -4,8 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
-use App\Models\Article; // Assume you have an Article model
+use App\Models\Article;
 use App\Models\UserPreference;
 use App\Traits\Response;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +13,7 @@ class ArticleController extends Controller
 {
 
     use Response;
-    // Fetch Articles with Pagination
+
     public function index(Request $request)
     {
         $query = Article::query()
@@ -25,7 +24,6 @@ class ArticleController extends Controller
             ->filterByAuthor($request->preferredAuthorIds);
 
         return $this->sendSuccessResponse(message: __('article.articles_fetched'), result: $query->paginate(10));
-
     }
 
     // Retrieve a single article
@@ -36,7 +34,8 @@ class ArticleController extends Controller
         return $this->sendSuccessResponse(message: __('article.articles_fetched'), result: $article);
     }
 
-    public function fetchNewsByPreferences(Request $request) {
+    public function fetchNewsByPreferences(Request $request)
+    {
         $userPreferences = UserPreference::where('user_id', Auth::id())->all();
 
         $request->request->add([
@@ -46,6 +45,5 @@ class ArticleController extends Controller
         ]);
 
         return $this->index($request);
-
     }
 }

@@ -6,7 +6,8 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-trait Response {
+trait Response
+{
 
     /**
      * Create a new JSON response instance.
@@ -15,7 +16,7 @@ trait Response {
      * @param  mixed  $result
      * @param  int  $code
      * @return \Illuminate\Http\JsonResponse
-    */
+     */
     public function sendSuccessResponse($message, mixed $result = [], $code = 200): JsonResponse
     {
         $response = [
@@ -34,15 +35,15 @@ trait Response {
      * @param  array  $result
      * @param  int  $code
      * @return \Illuminate\Http\JsonResponse
-    */
-    public function sendErrorResponse($message, $result = [], $code = 404): JsonResponse
+     */
+    public function sendErrorResponse($message, $error = [], $code = 404): JsonResponse
     {
         $response = [
             'success' => false,
             'message' => $message,
         ];
 
-        if(!empty($error)){
+        if (!empty($error)) {
             $response['data'] = $error;
         }
 
@@ -51,6 +52,6 @@ trait Response {
 
     protected function failedValidation(Validator $validator)
     {
-        throw new HttpResponseException($this->sendErrorResponse(message: $validator->errors(), code: 422));
+        throw new HttpResponseException($this->sendErrorResponse(message: "Validation Error", error: $validator->errors(), code: 422));
     }
 }

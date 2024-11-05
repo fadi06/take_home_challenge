@@ -39,7 +39,6 @@ class Article extends Model
      */
     public function scopeFilterByCategory($query, $categoryIds)
     {
-        dd($categoryIds);
         return $query->when($categoryIds, function ($q) use ($categoryIds) {
             $q->whereIn('category_id', $categoryIds);
         });
