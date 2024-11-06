@@ -14,6 +14,21 @@ class Article extends Model
      */
     protected $guarded = [];
 
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    public function source()
+    {
+        return $this->belongsTo(Source::class);
+    }
+
+    public function author()
+    {
+        return $this->belongsTo(Author::class);
+    }
+
     /**
      * Scope to filter by keyword in the title.
      */
@@ -30,7 +45,7 @@ class Article extends Model
     public function scopeFilterByDate($query, $date)
     {
         return $query->when($date, function ($q) use ($date) {
-            $q->whereDate('published_at', $date);
+            $q->orWhereDate('published_at', $date);
         });
     }
 
@@ -40,7 +55,7 @@ class Article extends Model
     public function scopeFilterByCategory($query, $categoryIds)
     {
         return $query->when($categoryIds, function ($q) use ($categoryIds) {
-            $q->whereIn('category_id', $categoryIds);
+            $q->orWhereIn('category_id', $categoryIds)->with('category:id,name');
         });
     }
 
@@ -50,7 +65,7 @@ class Article extends Model
     public function scopeFilterBySource($query, $ids)
     {
         return $query->when($ids, function ($q) use ($ids) {
-            $q->whereIn('source_id', $ids);
+            $q->orWhereIn('source_id', $ids)->with('source:id,name');
         });
     }
 
@@ -60,7 +75,7 @@ class Article extends Model
     public function scopeFilterByAuthor($query, $ids)
     {
         return $query->when($ids, function ($q) use ($ids) {
-            $q->whereIn('author_id', $ids);
+            $q->whereIn('author_id', $ids)->with('author:id,name');
         });
     }
 }

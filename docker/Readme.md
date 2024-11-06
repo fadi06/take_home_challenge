@@ -2,7 +2,7 @@
 
 ## Overview
 
-Spixay task: Build a simple Content Management System (CMS) with backend Laravel and docker.
+This project is a Laravel application configured to run in Docker. Follow the steps below to set up the project and start development.
 
 ## Prerequisites
 
@@ -48,7 +48,7 @@ Follow these steps to set up the project:
     If you need to enter the PHP service container, use the following command:
 
     ```bash
-    docker exec -it spixay_php_service bash
+    docker exec -it take_home_challenge_php_service bash
     ```
 
 5. **Run Migrations and Seed the Database**

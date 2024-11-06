@@ -19,9 +19,9 @@ class ArticleController extends Controller
         $query = Article::query()
             ->searchByKeyword($request->input('keyword'))
             ->filterByDate($request->input('date'))
-            ->filterByCategory($request->preferredCategoryIds)
-            ->filterBySource($request->preferredSourceIds)
-            ->filterByAuthor($request->preferredAuthorIds);
+            ->filterByCategory($request->category_ids)
+            ->filterBySource($request->source_ids)
+            ->filterByAuthor($request->author_ids);
 
         return $this->sendSuccessResponse(message: __('article.articles_fetched'), result: $query->paginate(10));
     }
@@ -36,14 +36,13 @@ class ArticleController extends Controller
 
     public function fetchNewsByPreferences(Request $request)
     {
-        $userPreferences = UserPreference::where('user_id', Auth::id())->all();
+        $userPreferences = UserPreference::where('user_id', Auth::id())->get();
 
-        $request->request->add([
-            'category_ids' => $userPreferences ? $userPreferences->category_id : [],
-            'author_ids' => $userPreferences ? $userPreferences->author_id : [],
-            'source_ids' => $userPreferences ? $userPreferences->source_id : [],
+        $request->merge([
+            'category_ids' => $userPreferences->pluck('category_id')->filter()->unique()->values()->all(),
+            'author_ids' => $userPreferences->pluck('author_id')->filter()->unique()->values()->all(),
+            'source_ids' => $userPreferences->pluck('source_id')->filter()->unique()->values()->all(),
         ]);
 
         return $this->index($request);
-    }
-}
+    }}

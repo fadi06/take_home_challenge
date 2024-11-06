@@ -68,4 +68,8 @@ If you face any database permission error attach the database container via this
     chmod -R 755 /var/lib/mysql
 ```
 
+## Docker
+
+To configure docker confguration of this project, you need to follow the `Readme.md` inside the docker folder.
+
 Happy Coding!

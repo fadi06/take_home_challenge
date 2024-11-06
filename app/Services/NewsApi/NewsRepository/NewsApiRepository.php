@@ -37,7 +37,6 @@ class NewsApiRepository implements NewsApiService
                 $response_body = json_decode($response->getBody());
                 $message = $response_body->message ?? 'Unknown error';
                 Log::error("API Request failed with message: $message");
-                throw new \Exception($message);
             }
 
             info($category. " is completed");

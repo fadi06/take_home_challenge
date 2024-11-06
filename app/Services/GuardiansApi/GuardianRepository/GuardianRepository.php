@@ -33,7 +33,6 @@ class GuardianRepository
                 $response_body = json_decode($response->getBody());
                 $message = $response_body->message ?? 'Unknown error';
                 Log::error("API Request failed with message: $message");
-                throw new \Exception($message);
             }
 
             info($pageNumber. " is completed");
